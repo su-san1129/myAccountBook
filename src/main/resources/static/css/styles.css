@@ -1,0 +1,23 @@
+.color-red {
+    color: #FF0000;
+}
+
+.fs-2 {
+    font-size: 32px;
+}
+
+i {
+    cursor: pointer;
+}
+
+.fa-chevron-left, .fa-chevron-right {
+    color: darkgray;
+}
+
+.fa-chevron-left:hover {
+    color: black;
+}
+
+.fa-chevron-right:hover {
+    color: black;
+}
