@@ -9,5 +9,15 @@ CREATE TABLE IF NOT EXISTS food_expenses (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   value INT NOT NULL,
+  comment VARCHAR(255),
+  meal_times INT NOT NULL,
+  created_at DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS expected_amounts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  meal_times INT NOT NULL,
+  value INT NOT NULL,
   created_at DATE NOT NULL
 );
