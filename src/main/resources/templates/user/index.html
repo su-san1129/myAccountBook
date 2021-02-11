@@ -9,16 +9,21 @@
 <main>
   <div class="container">
     <div class="date-header">
-      <i class="fas fa-chevron-left fa-2x"></i><span class="fs-2" th:text="${today}">x月xx日(月)</span><i class="fas fa-chevron-right fa-2x"></i>
+      <i class="fas fa-chevron-left fa-2x"></i><span class="fs-2" th:text="${today}">x月xx日(月)</span><i
+        class="fas fa-chevron-right fa-2x"></i>
     </div>
     <div class="row">
 
       <div class="col-sm-4">
         <div class="card mt-2">
           <div class="card-body">
-            <h5 class="card-title">昼に使った金額</h5>
+            <h5 class="card-title">昼に使った金額
+              <button type="button" class="btn btn-secondary btn-sm float-r" data-bs-toggle="modal"
+                      data-bs-target="#lunchShowToday">詳細
+              </button>
+            </h5>
             <div class="card-text">
-              <div>¥ 0</div>
+              <div>¥ <span th:text="${totalLunchValue}"></span></div>
               <div>お得額:¥ 0</div>
             </div>
           </div>
@@ -28,22 +33,14 @@
       <div class="col-sm-4">
         <div class="card mt-2">
           <div class="card-body">
-            <h5 class="card-title">夜に使った金額</h5>
-
+            <h5 class="card-title">夜に使った金額
+              <button type="button" class="btn btn-secondary btn-sm float-r" data-bs-toggle="modal"
+                      data-bs-target="#dinnerShowToday">詳細
+              </button>
+            </h5>
             <div class="card-text">
-              <div>¥ 0</div>
+              <div>¥ <span th:text="${totalDinnerValue}"></span></div>
               <div>お得額:¥ 0</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4">
-        <div class="card mt-2">
-          <div class="card-body">
-            <h5 class="card-title">今週の支出</h5>
-            <div class="card-text">
-              <div>¥ 0</div>
             </div>
           </div>
         </div>
@@ -60,6 +57,17 @@
         </div>
       </div>
 
+      <div class="col-sm-4">
+        <div class="card mt-2">
+          <div class="card-body">
+            <h5 class="card-title">今週の支出</h5>
+            <div class="card-text">
+              <div>¥ 0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
   </div>
@@ -67,8 +75,11 @@
 
 <footer class="footer mt-2">
   <div class="container">
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postFoodExpenses">食費を登録
-    </button>
+    <div class="d-grid gap-2">
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postFoodExpenses">
+        食費を登録
+      </button>
+    </div>
   </div>
 </footer>
 
@@ -80,16 +91,96 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form th:action="@{/foodExpenses/create}" method="post">
+        <form th:action="@{/food-expenses/create}" method="post">
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">金額:</label>
-            <input type="number" class="form-control" name="value" id="recipient-name">
+            <!--            <label for="meal-times-field" class="col-form-label">選択:</label>-->
+            <select name="mealTimes" class="form-control" id="meal-times-filed">
+              <option class="form-control" value="0">昼</option>
+              <option class="form-control" value="1">夜</option>
+            </select>
           </div>
+          <div class="mb-3">
+            <label for="value-field" class="col-form-label">金額:</label>
+            <input type="number" class="form-control" name="value" id="value-field">
+          </div>
+          <div class="mb-3">
+            <label for="food-expense-show-field" class="col-form-label">詳細:</label>
+            <input type="text" class="form-control" name="comment" id="food-expense-show-field">
+          </div>
+
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">キャンセル</button>
+          <button type="submit" class="btn btn-success">登録</button>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-bs-dismiss="modal">キャンセル</button>
-        <button type="button" class="btn btn-success">登録</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="lunchShowToday" tabindex="-1" aria-labelledby="lunchModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lunchModalLabel">昼食代 詳細</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover" th:if="${foodExpensesOfLunch.size > 0}">
+          <thead>
+          <th>#</th>
+          <th>金額</th>
+          <th>詳細</th>
+          <th></th>
+          <th></th>
+          </thead>
+          <tbody th:each="foodExpense : ${foodExpensesOfLunch}">
+          <td th:text="${foodExpense.id}">1</td>
+          <td th:text="${foodExpense.value}">¥ 1000</td>
+          <td th:text="${foodExpense.comment}"></td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm">編集</button>
+          </td>
+          <td>
+            <a th:href="@{'/food-expenses/delete/' + ${foodExpense.id}}" class="btn btn-outline-danger btn-sm">削除</a>
+          </td>
+          </tbody>
+        </table>
+        <p th:if="${0 >= foodExpensesOfLunch.size }">登録がありません</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="dinnerShowToday" tabindex="-1" aria-labelledby="dinnerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="dinnerModalLabel">夕食代 詳細</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover" th:if="${foodExpensesOfDinner.size > 0}">
+          <thead>
+          <th>#</th>
+          <th>金額</th>
+          <th>詳細</th>
+          <th></th>
+          <th></th>
+          </thead>
+          <tbody th:each="foodExpense : ${foodExpensesOfDinner}">
+          <td th:text="${foodExpense.id}">1</td>
+          <td th:text="${foodExpense.value}">¥ 1000</td>
+          <td th:text="${foodExpense.comment}"></td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm">編集</button>
+          </td>
+          <td>
+            <a th:href="@{'/food-expenses/delete/' + ${foodExpense.id}}" class="btn btn-outline-danger btn-sm">削除</a>
+          </td>
+          </tbody>
+        </table>
+        <p th:if="${0 >= foodExpensesOfDinner.size }">登録がありません</p>
       </div>
     </div>
   </div>
