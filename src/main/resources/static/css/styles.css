@@ -21,3 +21,7 @@ i {
 .fa-chevron-right:hover {
     color: black;
 }
+
+.float-r {
+    float: right;
+}
