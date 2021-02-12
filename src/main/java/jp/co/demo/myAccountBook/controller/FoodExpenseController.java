@@ -20,7 +20,7 @@ public class FoodExpenseController {
     @PostMapping("create")
     public String create(final FoodExpenseForm foodExpenseForm, @AuthenticationPrincipal LoginUser loginUser) {
         foodExpenseService.create(foodExpenseForm, loginUser.getUser());
-        return "redirect:/";
+        return "redirect:/?date=" + foodExpenseForm.getRegisteredAt();
     }
 
     @PostMapping("edit/{id}")

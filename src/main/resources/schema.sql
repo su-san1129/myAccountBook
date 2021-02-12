@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS food_expenses (
   value INT NOT NULL,
   comment VARCHAR(255),
   meal_times INT NOT NULL,
+  registered_at DATE NOT NULL,
   created_at TIMESTAMP NOT NULL
 );
 

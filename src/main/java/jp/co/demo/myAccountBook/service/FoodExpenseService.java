@@ -27,7 +27,7 @@ public class FoodExpenseService {
 
     public List<FoodExpense> getDayFoodExpensesByUserId(final Integer userId, final LocalDate date) {
         return foodExpenseRepository.findByUserId(userId).stream()
-                .filter(foodExpense -> foodExpense.getCreatedAt().toLocalDateTime().getDayOfMonth() == date.getDayOfMonth())
+                .filter(foodExpense -> foodExpense.getRegisteredAt().getDayOfMonth() == date.getDayOfMonth())
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +46,7 @@ public class FoodExpenseService {
     public List<FoodExpense> getWeekFoodExpensesByUserId(final Integer userId, final LocalDate date) {
         return foodExpenseRepository.findByUserId(userId).stream()
                 .filter(foodExpense -> {
-                    final LocalDate localDate = foodExpense.getCreatedAt().toLocalDateTime().toLocalDate();
+                    final LocalDate localDate = foodExpense.getRegisteredAt();
                     return localDate.isAfter(date.with(DayOfWeek.MONDAY).minusDays(1)) &&
                             localDate.isBefore(date.with(DayOfWeek.SUNDAY).plusDays(1));
                 })
@@ -61,6 +61,7 @@ public class FoodExpenseService {
                         .value(foodExpenseForm.getValue())
                         .mealTimes(foodExpenseForm.getMealTimes())
                         .comment(foodExpenseForm.getComment())
+                        .registeredAt(foodExpenseForm.getRegisteredAt().toLocalDate())
                         .createdAt(Timestamp.valueOf(LocalDateTime.now())).build()
         );
     }

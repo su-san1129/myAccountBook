@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,5 +18,6 @@ public class FoodExpense {
     private Integer value;
     private String comment;
     private Integer mealTimes;
+    private LocalDate registeredAt;
     private Timestamp createdAt;
 }

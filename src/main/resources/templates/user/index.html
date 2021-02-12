@@ -9,8 +9,13 @@
 <main>
   <div class="container">
     <div class="date-header">
-      <i class="fas fa-chevron-left fa-2x"></i><span class="fs-2" th:text="${today}">x月xx日(月)</span><i
-        class="fas fa-chevron-right fa-2x"></i>
+      <a th:href="@{ '/?date=' + ${displayDate.getLocalDate().minusDays(1).toString()} }">
+        <i class="fas fa-chevron-left fa-2x"></i>
+      </a>
+      <span class="fs-2" th:text="${displayDate.getFormatDate()}">x月xx日(月)</span>
+      <a th:href="@{ '/?date=' + ${displayDate.getLocalDate().plusDays(1).toString()} }">
+        <i class="fas fa-chevron-right fa-2x"></i>
+      </a>
     </div>
     <div class="row">
 
@@ -62,7 +67,7 @@
           <div class="card-body">
             <h5 class="card-title">今週の支出</h5>
             <div class="card-text">
-              <div>¥ 0</div>
+              <div>¥ <span th:text="${totalWeekValue}"></span></div>
             </div>
           </div>
         </div>
@@ -106,6 +111,7 @@
           <div class="mb-3">
             <label for="food-expense-show-field" class="col-form-label">詳細:</label>
             <input type="text" class="form-control" name="comment" id="food-expense-show-field">
+            <input type="hidden" class="form-control" name="registeredAt" id="create-at-field" th:value="${displayDate.getLocalDate().toString()}">
           </div>
 
           <button type="button" class="btn btn-default" data-bs-dismiss="modal">キャンセル</button>
