@@ -4,6 +4,7 @@ import jp.co.demo.myAccountBook.entity.DisplayDate;
 import jp.co.demo.myAccountBook.entity.FoodExpense;
 import jp.co.demo.myAccountBook.entity.LoginUser;
 import jp.co.demo.myAccountBook.service.FoodExpenseService;
+import jp.co.demo.myAccountBook.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
     private final FoodExpenseService foodExpenseService;
 
     @RequestMapping
@@ -50,5 +52,11 @@ public class UserController {
         model.addAttribute("totalWeekValue", totalWeekValue);
 
         return "user/index";
+    }
+
+    @RequestMapping("/users/create")
+    public String create(final String name, final String password, final String email) {
+        userService.create(name, password, email);
+        return "redirect:/";
     }
 }

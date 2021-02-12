@@ -40,7 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login", "/users/login").permitAll()
+                .antMatchers("/login", "/users/login", "/users/create"
+//                        , "/h2-console/**"
+                ).permitAll()
                 .anyRequest().authenticated();
         http.formLogin()
                 .loginProcessingUrl("/users/login")
@@ -55,8 +57,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true);
 
 //        開発用
-//        http.csrf().disable();
-//        http.headers().frameOptions().disable();
+        http.csrf().ignoringAntMatchers(
+                "/users/create"
+//                , "/h2-console/**"
+        );
+        http.headers().frameOptions().disable();
     }
 }
 
