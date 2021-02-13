@@ -34,3 +34,8 @@ build/
 
 ### database ###
 *.mv.db
+
+/src/main/resources/client/node_modules
+.DS_Store
+/src/main/resources/static/js/calendar/
+/src/main/resources/static/css/calendar/
